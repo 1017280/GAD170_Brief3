@@ -425,7 +425,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!212 &528353075
 SpriteRenderer:
@@ -488,8 +488,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7763fac346c5844a6716dc188a65bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minJumpForce: 100
-  maxJumpForce: 200
+  minJumpForce: 300
+  maxJumpForce: 1500
   chargeSpeed: 1
   shootForce: 100
 --- !u!114 &528353077

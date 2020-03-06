@@ -33,5 +33,7 @@ public class PlayerInput : MonoBehaviour
         wantGunCharge = Input.GetMouseButton((int)shootButton);
         wantShoot = Input.GetMouseButtonUp((int)shootButton);
         lookDir = mouseWorld - transform.position;
+        // Normalize
+        lookDir /= lookDir.magnitude;
     }
 }

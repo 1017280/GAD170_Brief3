@@ -8,7 +8,7 @@ public class PlayerData : MonoBehaviour
                                             INSPECTOR
     *****************************************************************************************/
 
-    [SerializeField] private float minJumpForce = 100.0f;
+    [SerializeField] private float minJumpForce = 300.0f;
     [SerializeField] private float maxJumpForce = 1500.0f;
     [SerializeField] private float chargeSpeed = 1.0f;
     [SerializeField] private float shootForce = 100.0f;
@@ -27,7 +27,9 @@ public class PlayerData : MonoBehaviour
     public float jumpCharge { get { return _jumpCharge; } set { _jumpCharge = Mathf.Clamp01(value); }}
     private float _jumpCharge = 0.0f;
     public Vector2 lastPosition { get; private set; } = Vector2.zero;
+    public Vector2 stuckPosition { get; set; }
     public bool wasStuck { get; private set; } = false;
+    public GameObject currentWall { get; set; } = null;
 
     public float GetJumpForce()
     {

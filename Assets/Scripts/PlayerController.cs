@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
     {
         if (myData.isStuck) 
         {
-            transform.position = myData.lastPosition;
+            transform.position = myData.stuckPosition;
+            myRigidbody.velocity = Vector2.zero;
         }
 
         if (myInput.wantGunCharge && myData.canShoot) 
@@ -46,13 +47,13 @@ public class PlayerController : MonoBehaviour
 
         if (myInput.wantJump && myData.canJump)
         {
-            Debug.Log("JUMP");
+            Debug.Log("JUMP (" + myData.GetJumpForce().ToString() + ") " + myInput.lookDir.ToString() + " " + myInput.lookDir.magnitude);
             this.Jump(myData.GetJumpForce(), myInput.lookDir);
         }
 
 
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(myInput.lookDir.y, myInput.lookDir.x));
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10.0f);
+
         
     }
 
@@ -76,17 +77,27 @@ public class PlayerController : MonoBehaviour
     {
         myRigidbody.AddForce(direction * force);
         myData.canJump = false;
-        myData.jumpCharge = 0.0f;
         myData.isStuck = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "platform") 
+        if (collision.transform.tag == "platform" && collision.gameObject != myData.currentWall) 
         {
             Debug.Log("STUCK");
             myData.isStuck = true;
             myData.canJump = true;
+            myData.currentWall = collision.gameObject;
+            myData.jumpCharge = 0.0f;
+            myData.stuckPosition = transform.position;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "platform" && collision.gameObject == myData.currentWall) 
+        {
+            myData.currentWall = null;
         }
     }
 }
