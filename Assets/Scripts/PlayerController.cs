@@ -28,6 +28,11 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = myData.stuckPosition;
             myRigidbody.velocity = Vector2.zero;
+            myData.framesUnstuck = 0;
+        }
+        else 
+        {
+            myData.framesUnstuck++;
         }
 
         if (myInput.wantGunCharge && myData.canShoot) 
@@ -37,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
         if (myInput.wantShoot && myData.canShoot) 
         {
-            this.Shoot(myData.GetShootForce());
+            this.Shoot(myData.GetShootForce(), myInput.lookDir);
         }
 
         if (myInput.wantJumpCharge && myData.canJump)
@@ -51,10 +56,18 @@ public class PlayerController : MonoBehaviour
             this.Jump(myData.GetJumpForce(), myInput.lookDir);
         }
 
+        if (!myData.isStuck && myData.currentWall != null && myData.framesUnstuck > 5) 
+        {
+            Stuck(myData.currentWall);
+        }
 
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(myInput.lookDir.y, myInput.lookDir.x));
 
-        
+        myData.shootWait += Time.deltaTime;        
+        if (myData.shootWait >= myData.GetShootCooldown())    
+        {
+            myData.canShoot = true;
+        }
     }
 
     private void ChargeGun(float rate)
@@ -67,29 +80,42 @@ public class PlayerController : MonoBehaviour
         myData.jumpCharge += rate * Time.deltaTime;
     }
 
-    private void Shoot(float force)
+    private void Shoot(float force, Vector2 direction)
     {
+        Debug.Log("SHOOT");
         myData.canShoot = false;
         myData.shootCharge = 0.0f;
+        myData.shootWait = 0;
+        var bullet = Instantiate(myData.GetBulletPrefab(), myData.gun.transform.position, Quaternion.Euler(transform.rotation.eulerAngles));
+        bullet.GetComponent<Bullet>().direction = direction;
+        bullet.GetComponent<Bullet>().force = force;
     }
 
     private void Jump(float force, Vector2 direction) 
     {
+        Debug.Log("JUMP");
         myRigidbody.AddForce(direction * force);
         myData.canJump = false;
         myData.isStuck = false;
+        myData.framesUnstuck = 0;
+        myData.launchEffect.Play();
+    }
+
+    private void Stuck(GameObject go) 
+    {
+        Debug.Log("STUCK");
+        myData.isStuck = true;
+        myData.canJump = true;
+        myData.currentWall = go;
+        myData.jumpCharge = 0.0f;
+        myData.stuckPosition = transform.position;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "platform" && collision.gameObject != myData.currentWall) 
         {
-            Debug.Log("STUCK");
-            myData.isStuck = true;
-            myData.canJump = true;
-            myData.currentWall = collision.gameObject;
-            myData.jumpCharge = 0.0f;
-            myData.stuckPosition = transform.position;
+            Stuck(collision.gameObject);
         }
     }
 
@@ -97,6 +123,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.transform.tag == "platform" && collision.gameObject == myData.currentWall) 
         {
+            Debug.Log("Leave wall");
             myData.currentWall = null;
         }
     }
