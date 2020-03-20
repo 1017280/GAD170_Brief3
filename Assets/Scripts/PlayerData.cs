@@ -15,6 +15,10 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private float maxShootForce = 1000.0f;
     [SerializeField] private float shootCooldown = 1.0f;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private List<AudioClip> shootSounds;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip jumpChargeSound;
+    [SerializeField] private AudioClip jumpChargeMaxSound;
 
     /*****************************************************************************************
                                             EXPOSED DATA
@@ -35,12 +39,20 @@ public class PlayerData : MonoBehaviour
     public bool wasStuck { get; private set; } = false;
     public GameObject currentWall { get; set; } = null;
     public ParticleSystem launchEffect { get; private set; } = null;
+    public ParticleSystem jumpChargeEffect { get; private set; } = null;
+    public ParticleSystem shootEffect { get; private set; } = null;
+    public ParticleSystem shootChargeEffect { get; private set; } = null;
     public GameObject gun { get; private set; }
     public float shootWait { get; set; } = 0;
 
     public float GetJumpForce()
     {
         return minJumpForce + (maxJumpForce - minJumpForce) * jumpCharge;
+    }
+
+    public float GetJumpForceRatio()
+    {
+        return (GetJumpForce() - minJumpForce) / (maxJumpForce - minJumpForce);
     }
 
     public GameObject GetBulletPrefab()
@@ -53,14 +65,42 @@ public class PlayerData : MonoBehaviour
         return (maxShootForce - minShootForce) * shootCharge + minShootForce;
     }
 
+    public float GetShootForceRatio()
+    {
+        return (GetShootForce() - minShootForce) / (maxShootForce - minShootForce);
+    }
+
     public float GetShootCooldown()
     {
         return shootCooldown;
     }
 
+    public List<AudioClip> GetShootSounds()
+    {
+        return shootSounds;
+    }
+
+    public AudioClip GetJumpSound()
+    {
+        return jumpSound;
+    }
+
+    public AudioClip GetJumpChargeSound()
+    {
+        return jumpChargeSound;
+    }
+
+    public AudioClip GetJumpChargeMaxSound()
+    {
+        return jumpChargeMaxSound;
+    }
+
     void Start()
     {
-        launchEffect = GetComponentInChildren<ParticleSystem>();
+        launchEffect = transform.Find("LaunchEffect").GetComponent<ParticleSystem>();
+        jumpChargeEffect = transform.Find("JumpChargeEffect").GetComponent<ParticleSystem>();
+        shootEffect = transform.Find("ShootEffect").GetComponent<ParticleSystem>();
+        shootChargeEffect = transform.Find("ShootChargeEffect").GetComponent<ParticleSystem>();
         gun = transform.Find("Gun").gameObject;
     }
 

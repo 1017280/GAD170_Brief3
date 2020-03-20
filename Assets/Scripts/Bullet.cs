@@ -4,32 +4,34 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] private List<AudioClip> bounceSounds;
+    [SerializeField] private float lifeTime = 4.0f;
     public Vector2 direction { get; set; }
     public float force { get; set; }
 
-    private bool hitWall = false;
-
     private Rigidbody2D rb;
+    private AudioSource player;
+    private float timeLived = 0.0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        player = GetComponent<AudioSource>();
+
         rb.AddForce(direction * force);
     }
 
     void Update()
     {
-        /*if (!hitWall)
+        timeLived += Time.deltaTime;
+        if (timeLived >= lifeTime)
         {
-            rb.MovePosition(transform.position + new Vector3(direction.x, direction.y, 0) * force * Time.deltaTime);
-        }*/
+            Destroy(gameObject);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "platform") 
-        {
-            hitWall = true;
-        }
+        SoundPlayer.instance.Play(player, bounceSounds[Random.Range(0, bounceSounds.Count)], collision.relativeVelocity.magnitude);
     }
 }

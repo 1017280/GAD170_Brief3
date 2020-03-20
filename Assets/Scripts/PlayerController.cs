@@ -14,12 +14,16 @@ public class PlayerController : MonoBehaviour
     private PlayerInput myInput;
     private PlayerData myData;
     private Rigidbody2D myRigidbody;
+    private AudioSource gunAudio;
+    private AudioSource pipeAudio;
 
     void Start()
     {
         myInput = this.GetComponent<PlayerInput>();
         myData = this.GetComponent<PlayerData>();
         myRigidbody = this.GetComponent<Rigidbody2D>();
+        gunAudio = this.transform.Find("Gun").GetComponent<AudioSource>();
+        pipeAudio = this.transform.Find("Pipe").GetComponent<AudioSource>();
     }
 
     void Update()
@@ -39,6 +43,10 @@ public class PlayerController : MonoBehaviour
         {
             this.ChargeGun(myData.GetChargeSpeed());
         }
+        else
+        {
+            myData.shootChargeEffect.Stop();
+        }
 
         if (myInput.wantShoot && myData.canShoot) 
         {
@@ -48,6 +56,10 @@ public class PlayerController : MonoBehaviour
         if (myInput.wantJumpCharge && myData.canJump)
         {
             this.ChargeJump(myData.GetChargeSpeed());
+        }
+        else 
+        {
+            myData.jumpChargeEffect.Stop();
         }
 
         if (myInput.wantJump && myData.canJump)
@@ -73,27 +85,46 @@ public class PlayerController : MonoBehaviour
     private void ChargeGun(float rate)
     {
         myData.shootCharge += rate * Time.deltaTime;
+        if (!myData.shootChargeEffect.isPlaying)
+        {
+            myData.shootChargeEffect.Play();
+        }
+        float scale = 0.4f + 0.6f * myData.GetShootForceRatio();
+        myData.shootChargeEffect.transform.localScale = new Vector3(scale, scale, 1.0f);
     }
 
     private void ChargeJump(float rate)
     {
         myData.jumpCharge += rate * Time.deltaTime;
+        if (!myData.jumpChargeEffect.isPlaying) 
+        {
+            myData.jumpChargeEffect.Play();
+            SoundPlayer.instance.Play(pipeAudio, myData.GetJumpChargeSound(), 1.0f);
+        }
+        if (!pipeAudio.isPlaying)
+        {
+            SoundPlayer.instance.Play(pipeAudio, myData.GetJumpChargeMaxSound(), 1.0f, true);
+        }
+        myData.jumpChargeEffect.transform.localScale = new Vector3(myData.GetJumpForceRatio(), myData.GetJumpForceRatio(), 1);
     }
 
     private void Shoot(float force, Vector2 direction)
     {
-        Debug.Log("SHOOT");
+        SoundPlayer.instance.Play(gunAudio, myData.GetShootSounds()[Random.Range(0, myData.GetShootSounds().Count)], 0.1f + 0.9f * myData.GetShootForceRatio());
+        float scale = 0.4f + 0.6f * myData.GetShootForceRatio();
+        myData.shootEffect.transform.localScale = new Vector3(scale, scale, 1.0f);
         myData.canShoot = false;
         myData.shootCharge = 0.0f;
         myData.shootWait = 0;
         var bullet = Instantiate(myData.GetBulletPrefab(), myData.gun.transform.position, Quaternion.Euler(transform.rotation.eulerAngles));
         bullet.GetComponent<Bullet>().direction = direction;
         bullet.GetComponent<Bullet>().force = force;
+        myData.shootEffect.Play();
     }
 
     private void Jump(float force, Vector2 direction) 
     {
-        Debug.Log("JUMP");
+        SoundPlayer.instance.Play(pipeAudio, myData.GetJumpSound(), 0.1f + 0.9f * myData.GetJumpForceRatio());
         myRigidbody.AddForce(direction * force);
         myData.canJump = false;
         myData.isStuck = false;
