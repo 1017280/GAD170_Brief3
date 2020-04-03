@@ -1,25 +1,52 @@
-﻿using System.Collections;
+﻿#region Namespace Dependencies
 using System.Collections.Generic;
 using UnityEngine;
+#endregion
 
 public class PlayerData : MonoBehaviour
 {
+#region Inspector
     /*****************************************************************************************
                                             INSPECTOR
     *****************************************************************************************/
 
+    ///<summary>The minimum jump force for the shortest jump charge</summary>
+    [Tooltip("The minimum jump force for the shortest jump charge")]
     [SerializeField] private float minJumpForce = 300.0f;
+    ///<summary>The maximum jump force for the longest jump charge</summary>
+    [Tooltip("The maximum jump force for the longest jump charge")]
     [SerializeField] private float maxJumpForce = 1500.0f;
+    ///<summary>The speed of which jumps and shots are charged</summary>
+    [Tooltip("The speed of which jumps and shots are charged")]
     [SerializeField] private float chargeSpeed = 1.0f;
+    ///<summary>The minimum shoot force for the shortest charge</summary>
+    [Tooltip("The minimum shoot force for the shortest charge")]
     [SerializeField] private float minShootForce = 300.0f;
+    ///<summary>The maximum shoot force for the longest charge</summary>
+    [Tooltip("The maximum shoot force for the longest charge")]
     [SerializeField] private float maxShootForce = 1000.0f;
+    ///<summary>The time it takes before the player is able to shoot again</summary>
+    [Tooltip("The time it takes before the player is able to shoot again")]
     [SerializeField] private float shootCooldown = 1.0f;
+    ///<summary>The prefab of the bullet to be shot</summary>
+    [Tooltip("The prefab of the bullet to be shot")]
     [SerializeField] private GameObject bulletPrefab;
+    ///<summary>The pool of sounds to select a random sound to play from when shooting</summary>
+    [Tooltip("The pool of sounds to select a random sound to play from when shooting")]
     [SerializeField] private List<AudioClip> shootSounds;
+    ///<summary>The sound to be played when the player jumps</summary>
+    [Tooltip("The sound to be played when the player jumps")]
     [SerializeField] private AudioClip jumpSound;
+    ///<summary>The buildup sound to be played when the player starts charging</summary>
+    [Tooltip("The buildup sound to be played when the player starts charging")]
     [SerializeField] private AudioClip jumpChargeSound;
+    ///<summary>The seamless sound for when the player is in max charge</summary>
+    [Tooltip("The seamless sound for when the player is in max charge")]
     [SerializeField] private AudioClip jumpChargeMaxSound;
 
+#endregion
+
+#region Exposed Data
     /*****************************************************************************************
                                             EXPOSED DATA
     *****************************************************************************************/
@@ -44,7 +71,15 @@ public class PlayerData : MonoBehaviour
     public ParticleSystem shootChargeEffect { get; private set; } = null;
     public GameObject gun { get; private set; }
     public float shootWait { get; set; } = 0;
+    public Vector2 freezeVelocity { get; set; } = Vector2.zero;
+    public Vector3 freezePosition { get; set; } = Vector3.zero;
+    public bool freezeJumpEffectState { get; set; } = false;
+    public bool freezeJumpChargeEffectState { get; set; } = false;
+    public bool freezeShootEffectState { get; set; } = false;
+    public bool freezeShootChargeEffectState { get; set; } = false;
+#endregion
 
+#region Exposed API
     public float GetJumpForce()
     {
         return minJumpForce + (maxJumpForce - minJumpForce) * jumpCharge;
@@ -95,6 +130,10 @@ public class PlayerData : MonoBehaviour
         return jumpChargeMaxSound;
     }
 
+    public float GetChargeSpeed() { return chargeSpeed; }
+#endregion
+    
+#region Unity Callback Functions
     void Start()
     {
         launchEffect = transform.Find("LaunchEffect").GetComponent<ParticleSystem>();
@@ -109,6 +148,5 @@ public class PlayerData : MonoBehaviour
         lastPosition = transform.position;
         wasStuck = isStuck;   
     }
-
-    public float GetChargeSpeed() { return chargeSpeed; }
+#endregion
 }

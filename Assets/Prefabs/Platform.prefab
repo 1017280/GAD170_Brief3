@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6781816347009042804}
   - component: {fileID: 174358935168871936}
   - component: {fileID: -7636131899281835286}
+  - component: {fileID: 225279959080803084}
   m_Layer: 0
   m_Name: Platform
   m_TagString: platform
@@ -129,3 +130,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &225279959080803084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822316593692564795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ed17b0c0c3ccc488393553d3649c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingLives: 3
+  minLivesThreshold: 0
+  lifeLabelPrefab: {fileID: 7472895176904344318, guid: 0e4117bde7b84a840aa9fccd52d74036,
+    type: 3}
+  labelPositionRatio: {x: 0, y: 0}
+  canvas: {fileID: 7304134374040000969, guid: ee5f2e150ec039a4e81243d6732a9ba2, type: 3}

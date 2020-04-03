@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region Namespace Dependencies
 using UnityEngine;
+#endregion
 
 enum MouseButton : int
 {
@@ -8,22 +8,29 @@ enum MouseButton : int
 }
 public class PlayerInput : MonoBehaviour
 {
+#region Inspector
     /*****************************************************************************************
                                             INSPECTOR
     *****************************************************************************************/
 
     [SerializeField] private string jumpKey = "space";
     [SerializeField] private MouseButton shootButton = MouseButton.left;
+    [SerializeField] private string panModeKey = "r";
+#endregion
 
+#region Exposed Data
     /*****************************************************************************************
-                                        READONLY DATA
+                                        EXPOSED DATA
     *****************************************************************************************/
     public bool wantJumpCharge { get; private set; } = false;
     public bool wantJump { get; private set; } = false;
     public bool wantGunCharge { get; private set; } = false;
     public bool wantShoot { get; private set; } = false;
+    public bool wantPanModeSwitch { get; private set; } = false;
     public Vector2 lookDir { get; private set; } = new Vector2(0, 0);
+#endregion
 
+#region Unity Callback Functions
     void Update()
     {
         var mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -35,5 +42,7 @@ public class PlayerInput : MonoBehaviour
         lookDir = mouseWorld - transform.position;
         // Normalize
         lookDir /= lookDir.magnitude;
+        wantPanModeSwitch = Input.GetKeyDown(panModeKey);
     }
+#endregion
 }

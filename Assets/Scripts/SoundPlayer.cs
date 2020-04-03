@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region Namespace Dependencies
 using UnityEngine;
+#endregion
 
 public class SoundPlayer : MonoBehaviour
 {
+#region Unity Callback Functions
     void Awake()
     {
         _instance = this;
@@ -14,6 +15,9 @@ public class SoundPlayer : MonoBehaviour
         
     }
 
+#endregion
+
+#region Exposed API
     public void Play(AudioSource player, AudioClip clip, float volume, bool looping = false)
     {
         player.volume = volume;
@@ -21,7 +25,10 @@ public class SoundPlayer : MonoBehaviour
         player.loop = looping;
         player.Play();
     }
+#endregion
 
+#region Singleton
     public static SoundPlayer instance { get { return _instance; } }
     private static SoundPlayer _instance;
+#endregion
 }
