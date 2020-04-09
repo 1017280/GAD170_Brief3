@@ -25,6 +25,10 @@ public class PlatformLife : MonoBehaviour
     [Tooltip("The position of which the UI label representing the current amount of lives will be at as a ratio between 0-1")]
     [SerializeField] private Vector2 labelPositionRatio = new Vector2(0.5f, 0.5f);
 
+    /// <summary>Is this platform mortal; does it have a life counter that will kill it at 0?</summary>
+    [Tooltip("Is this platform mortal; does it have a life counter that will kill it at 0?")]
+    [SerializeField] private bool isMortal = true;
+
 #endregion
 
 #region Local Data
@@ -40,7 +44,7 @@ public class PlatformLife : MonoBehaviour
         GameEvents.PlayerleftWallEvent += OnPlayerLeftWall;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         GameEvents.PlayerleftWallEvent -= OnPlayerLeftWall;
     }
@@ -48,8 +52,8 @@ public class PlatformLife : MonoBehaviour
     void Start()
     {
         // Just do an if check on the lifeLabelPrefab instead of an assertion, as you should 
-        // be able to create platforms without labels for quick testing levels
-        if (lifeLabelPrefab != null)
+        // be able to create platforms without labels
+        if (lifeLabelPrefab != null && isMortal)
         {
             // Create the label with the canvas as its parent
             var label = Instantiate(lifeLabelPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("Canvas").transform).GetComponent<PlatformLifeLabel>();
@@ -118,7 +122,7 @@ public class PlatformLife : MonoBehaviour
 
     void OnPlayerLeftWall(GameObject wall, GameObject player) 
     {
-        if (wall == this.gameObject) 
+        if (wall == this.gameObject && isMortal) 
         {
             RetractLife();
         }

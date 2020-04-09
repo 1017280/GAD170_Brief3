@@ -16,9 +16,24 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rb;
     private AudioSource player;
     private float timeLived = 0.0f;
+    private Vector2 freezePosition = Vector2.zero;
+    private Vector2 freezeVelocity = Vector2.zero;
+    bool frozen = false;
+
 #endregion
 
 #region Unity Callback Functions
+   
+   void OnEnable()
+   {
+       GameEvents.GameStateChangedEvent += OnGameStateChange;
+   }
+
+   void OnDisable()
+   {
+       GameEvents.GameStateChangedEvent -= OnGameStateChange;
+   }
+   
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,6 +44,14 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+
+        if (frozen)
+        {
+            rb.velocity = Vector2.zero;
+            transform.position = freezePosition;
+            return;
+        }
+
         timeLived += Time.deltaTime;
         if (timeLived >= lifeTime)
         {
@@ -41,4 +64,24 @@ public class Bullet : MonoBehaviour
         SoundPlayer.instance.Play(player, bounceSounds[Random.Range(0, bounceSounds.Count)], collision.relativeVelocity.magnitude);
     }
 #endregion
+
+#region Game Event Callback Functions
+
+void OnGameStateChange(GameState newState)
+{
+    if (newState != GameState.Playing)
+    {
+        frozen = true;
+        freezePosition = transform.position;
+        freezeVelocity = rb.velocity;
+    }
+    else 
+    {
+        frozen = false;
+        rb.velocity = freezeVelocity;
+    }
+}
+
+#endregion
+
 }

@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         GameEvents.GameStateChangedEvent += OnGameStateChange;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         GameEvents.GameStateChangedEvent -= OnGameStateChange;
     }
@@ -51,6 +51,9 @@ public class PlayerController : MonoBehaviour
         Debug.Assert(myRigidbody != null, "Player RigidBody2D was not found!");
         Debug.Assert(gunAudio != null, "Player did not find AudioSource on child object 'Gun'!");
         Debug.Assert(pipeAudio != null, "Player did not find AudioSource on child object 'Pipe'!");
+
+        Debug.Log("Player start at " + transform.position.ToString());
+        transform.position = myData.GetStartPosition();
     }
 
     void Update()
@@ -130,6 +133,11 @@ public class PlayerController : MonoBehaviour
         if (collision.transform.tag == "platform" && collision.gameObject != myData.currentWall) 
         {
             BecomeStuckTo(collision.gameObject);
+        }
+
+        if (collision.transform.tag == "winflag")
+        {
+            GameEvents.PlayerWonEvent.Invoke();
         }
     }
 
@@ -257,4 +265,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 #endregion
+
+    
 }

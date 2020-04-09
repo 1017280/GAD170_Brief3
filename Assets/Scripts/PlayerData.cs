@@ -43,6 +43,9 @@ public class PlayerData : MonoBehaviour
     ///<summary>The seamless sound for when the player is in max charge</summary>
     [Tooltip("The seamless sound for when the player is in max charge")]
     [SerializeField] private AudioClip jumpChargeMaxSound;
+    ///<summary>The position for the player to start at. This is to prevent a seemingly Unity bug where for some reason the player start position is changed on full scene reload</summary>
+    [Tooltip("The position where the player will start")]
+    [SerializeField] private Vector2 startPosition;
 
 #endregion
 
@@ -130,6 +133,11 @@ public class PlayerData : MonoBehaviour
         return jumpChargeMaxSound;
     }
 
+    public Vector2 GetStartPosition()
+    {
+        return startPosition;
+    }
+
     public float GetChargeSpeed() { return chargeSpeed; }
 #endregion
     
@@ -148,5 +156,10 @@ public class PlayerData : MonoBehaviour
         lastPosition = transform.position;
         wasStuck = isStuck;   
     }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(startPosition, 0.5f);
+    }
+
 #endregion
 }

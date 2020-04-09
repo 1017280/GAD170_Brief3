@@ -18,4 +18,7 @@ public static class GameEvents
 
     public delegate void GameStateChanged(GameState newState);
     public static GameStateChanged GameStateChangedEvent = new GameStateChanged((GameState g) => {});
+
+        public delegate void PlayerWon();
+    public static PlayerWon PlayerWonEvent = new PlayerWon(() => {});
 }
