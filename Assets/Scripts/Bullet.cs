@@ -1,4 +1,13 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Controls the bullet
+//  Purpose:
+//   To make an object act like a bullet
+//  Usage:
+//   Attach to an object with a rigidbody and an audio source
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using System.Collections.Generic;
 using UnityEngine;
 #endregion
@@ -8,8 +17,13 @@ public class Bullet : MonoBehaviour
 #region Inspector
     [SerializeField] private List<AudioClip> bounceSounds;
     [SerializeField] private float lifeTime = 4.0f;
+#endregion
+
+#region Exposed Data
+
     public Vector2 direction { get; set; }
     public float force { get; set; }
+
 #endregion
 
 #region Local Data

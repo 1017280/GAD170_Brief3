@@ -1,4 +1,13 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   A thin wrapper around the Unity sound playing API
+//  Purpose:
+//   To make it more simple to globally play an audio clip
+//  Usage:
+//   Call SoundPlayer.instance.Play() and provide necessary parameters
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using UnityEngine;
 #endregion
 

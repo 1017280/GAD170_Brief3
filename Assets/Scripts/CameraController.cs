@@ -1,4 +1,14 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Contains the behaviour for how the main camera should work. Follows the player when game state
+//   is GameState.running but becomes controllable with WASD QE when in GameState.panMode.
+//  Purpose:
+//   To follow the player or allow the user to control it in panMode.
+//  Usage:
+//   Put script on the main scene camera and add the player transform reference in the inspector
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using UnityEngine;
 #endregion
 

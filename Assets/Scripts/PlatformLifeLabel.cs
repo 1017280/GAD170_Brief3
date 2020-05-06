@@ -1,4 +1,13 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Syncs a UI label with a world platform
+//  Purpose:
+//   To make the platform label look like it's on the platforms in the world
+//  Usage:
+//   Put on the label that will be on a platform and assign this label in the platform inspector
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using UnityEngine;
 using UnityEngine.UI;
 #endregion
@@ -37,10 +46,23 @@ public class PlatformLifeLabel : MonoBehaviour
         transform.position = targetPlatform.GetLabelPosition();//Camera.main.ScreenToWorldPoint(targetPlatform.GetLabelPosition());
     }
 
+#endregion
+
+#region EXPOSED API
+
     public void SetPlatform(PlatformLife platform, int startLives) 
     {
         targetPlatform = platform;
         label.text = startLives.ToString();
+    }
+
+#endregion
+
+#region LOCAL API
+
+    void OnThisPlatformLifeChanged(int currentLives)
+    {
+        label.text = currentLives.ToString();
     }
 
 #endregion
@@ -54,11 +76,6 @@ public class PlatformLifeLabel : MonoBehaviour
         }
     }
 
-    void OnThisPlatformLifeChanged(int currentLives)
-    {
-        label.text = currentLives.ToString();
-    }
-
     void OnPlatformDestroyed(PlatformLife platform)
     {
         if (targetPlatform == platform)
@@ -68,4 +85,6 @@ public class PlatformLifeLabel : MonoBehaviour
     }
 
 #endregion
+
 }
+

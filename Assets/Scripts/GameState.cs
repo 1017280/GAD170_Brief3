@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Wraps around a hidden GameState value and controls what happens when the state is changed.
+//  Purpose:
+//   To control the current game state and dispatch an event for when its changed                 
+//  Usage:
+//   Call SetState() to set the current state and GetCurrentState() to get the current state.
+//   Subscribe to GameEvents.GameStateChangedEvent to be notifed when the event is changed
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 using UnityEngine;
 
 public enum GameState

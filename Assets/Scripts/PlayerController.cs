@@ -1,4 +1,13 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Uses player data & player input to control the player object.
+//  Purpose:
+//   To let the user control the player object with jumping, shooting & rotating to look direction
+//  Usage:
+//   Attach to player object
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using UnityEngine;
 #endregion
 
@@ -58,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(myData.freezePosition.ToString() + " " + myData.isStuck);
         if (myInput.wantPanModeSwitch)
         {
             if (GameStateManager.GetCurrentState() == GameState.Playing)
@@ -73,7 +83,6 @@ public class PlayerController : MonoBehaviour
         if (GameStateManager.GetCurrentState() != GameState.Playing) 
         {
             myRigidbody.velocity = Vector2.zero;
-            transform.position = myData.freezePosition;
             return;
         }
         // Any logic beyond this point only happens in GameState.Playing
@@ -117,7 +126,8 @@ public class PlayerController : MonoBehaviour
 
         if (!myData.isStuck && myData.currentWall != null && myData.framesUnstuck > 5) 
         {
-            BecomeStuckTo(myData.currentWall);
+            // Player jumped towards current wall, reset to stuck position
+            BecomeStuckTo(myData.currentWall, myData.stuckPosition);
         }
 
         UpdateRotation();
@@ -132,7 +142,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.transform.tag == "platform" && collision.gameObject != myData.currentWall) 
         {
-            BecomeStuckTo(collision.gameObject);
+            // Get stuck on current position
+            BecomeStuckTo(collision.gameObject, transform.position);
         }
 
         if (collision.transform.tag == "winflag")
@@ -203,15 +214,16 @@ public class PlayerController : MonoBehaviour
         myData.isStuck = false;
         myData.framesUnstuck = 0;
         myData.launchEffect.Play();
+        myData.lastStuckWall = myData.currentWall;
     }
 
-    private void BecomeStuckTo(GameObject go) 
+    private void BecomeStuckTo(GameObject go, Vector2 stuckPosition) 
     {
         myData.isStuck = true;
         myData.canJump = true;
         myData.currentWall = go;
         myData.jumpCharge = 0.0f;
-        myData.stuckPosition = transform.position;
+        myData.stuckPosition = stuckPosition;
     }
 
     private void Freeze()

@@ -1,4 +1,13 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Monitors and modifires the lives on a platform and destroys it when lives is 0 
+//  Purpose:
+//   To give the platforms a life value and a way to destroy them
+//  Usage:
+//   Attach to a platform object
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using UnityEngine;
 #endregion
 

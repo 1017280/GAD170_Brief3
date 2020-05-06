@@ -1,4 +1,15 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Holds all player data as well as updates things like lastPosition
+//  Purpose:
+//   To make PlayerController more clean, give a nice inspector interface and to separate data
+//   from logic.
+//  Usage:
+//   Require this component on the PlayerController and hold a reference to it and refer to it
+//   for player data. If another script wants info about the player, this is the script to look at.
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using System.Collections.Generic;
 using UnityEngine;
 #endregion
@@ -68,6 +79,7 @@ public class PlayerData : MonoBehaviour
     public Vector2 stuckPosition { get; set; }
     public bool wasStuck { get; private set; } = false;
     public GameObject currentWall { get; set; } = null;
+    public GameObject lastStuckWall { get; set; } = null;
     public ParticleSystem launchEffect { get; private set; } = null;
     public ParticleSystem jumpChargeEffect { get; private set; } = null;
     public ParticleSystem shootEffect { get; private set; } = null;

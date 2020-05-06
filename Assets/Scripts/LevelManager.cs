@@ -59,7 +59,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("WinScene");
+            SceneManager.LoadScene("MainMenu");
         }
     }
 

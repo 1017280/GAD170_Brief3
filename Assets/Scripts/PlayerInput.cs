@@ -1,4 +1,15 @@
-﻿#region Namespace Dependencies
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Updates and holds input data relevant to the player
+//  Purpose:
+//   To be used in PlayerController for all input actions and be a nice interface in the inspector.
+//   Also servers the purpose to keep PlayerController more clean and separate logic from data.
+//  Usage:
+//   Require this component on the PlayerController and hold a reference to it and refer to it
+//   for any input data
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#region Namespace Dependencies
 using UnityEngine;
 #endregion
 

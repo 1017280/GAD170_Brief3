@@ -1,3 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Description:
+//   Holds all the game events statically
+//  Purpose:
+//   To group and make all game events easily accessible globally
+//  Usage:
+//   Do 'GameEvents.SomeEvent += MyCallbackFunction' in OnEnable() and
+//   'GameEvents.SomeEvent -= MyCallbackFunction' in OnDisable().
+//   To Invoke en event do 'GameEvents.SomeEvent.Invoke(args...)'
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +30,6 @@ public static class GameEvents
     public delegate void GameStateChanged(GameState newState);
     public static GameStateChanged GameStateChangedEvent = new GameStateChanged((GameState g) => {});
 
-        public delegate void PlayerWon();
+    public delegate void PlayerWon();
     public static PlayerWon PlayerWonEvent = new PlayerWon(() => {});
 }

@@ -1,0 +1,15 @@
+Hold space to charge a jump, release to jump. Longer charge = stronger jump. 
+
+The number on platforms represent how many times you can jump off of it. If it hits 0, the platforms  is destroyed
+
+If the platform doesn't have a number, it is not mortal and you can jump off of it as many times as you'd like.
+
+The goal is to get to the flag
+
+Hold left mouse button to charge gun and release to shoot. The longer you charge the higher the force of the bullet.
+
+Colored platforms are platforms that you can't get stuck to or jump off and needs to be removed by shooting its key. Its key is identified as a small square of the same color.
+
+Hit R to go into pan mode and scout the level
+
+ESC will bring up the pause menu where you can skip or restart the current level or go back to the main menu.
